@@ -1,6 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
+import { db } from "../firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 const ApplicationForm = () => {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [county, setCounty] = useState("");
+  const [gmoType, setGmoType] = useState("");
+  const [gmoPurpose, setGmoPurpose] = useState("");
+  const [feedback, setFeedback] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await addDoc(collection(db, "gmoDetailsForm"), {
+      name: name,
+      email: email,
+      county: county,
+      gmoType: gmoType,
+      gmoPurpose: gmoPurpose,
+      feedback: feedback,
+    })
+      .then(() => {
+        console.log("Message sent successfully");
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+    setEmail("");
+    setName("");
+    setCounty("");
+    setGmoType("");
+    setGmoPurpose("");
+    setFeedback("");
+  };
+
   return (
     <div className="container outer">
       <div className="outer-inner row">
@@ -11,7 +44,7 @@ const ApplicationForm = () => {
           />
         </div>
         <div className="col mx-5 d-flex justify-content-end column2">
-          <form>
+          <form onSubmit={handleSubmit}>
             <h3 className="sign">Fill in the GMO application form</h3>
             <div className="mb-3 mt-3">
               <label htmlFor="email">Email</label>
@@ -21,7 +54,9 @@ const ApplicationForm = () => {
                 id="email"
                 required
                 autoComplete="off"
+                value={email}
                 placeholder="Enter Email"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="mb-3">
@@ -31,19 +66,9 @@ const ApplicationForm = () => {
                 className="form-control"
                 required
                 autoComplete="off"
+                value={name}
                 placeholder="Enter name"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password">Certificate number</label>
-              <input
-                disabled
-                type="text"
-                className="form-control"
-                name="certificate_number"
-                required
-                placeholder="Auto-Generating Certificate Number"
-                autoComplete="off"
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="mb-3">
@@ -53,12 +78,15 @@ const ApplicationForm = () => {
                 name="county"
                 required
                 aria-label="counties select"
+                value={county}
+                onChange={(e) => setCounty(e.target.value)}
               >
-                <option selected>Choose your county</option>
-                <option value="1">Mombasa</option>
-                <option value="27">Uasin Gishu</option>
-                <option value="32">Nakuru</option>
-                <option value="47">Nairobi</option>
+                <option value="don't pick this">Choose your county</option>
+                <option value="Mombasa">Mombasa</option>
+                <option value="Lamu">Lamu</option>
+                <option value="Uasin Gishu">Uasin Gishu</option>
+                <option value="Nakuru">Nakuru</option>
+                <option value="Nairobi">Nairobi</option>
               </select>
             </div>
             <div className="mb-3">
@@ -67,13 +95,15 @@ const ApplicationForm = () => {
                 className="form-select"
                 name="GMO_type"
                 required
-                aria-label="counties select"
+                aria-label="type select"
+                value={gmoType}
+                onChange={(e) => setGmoType(e.target.value)}
               >
-                <option selected>Choose GMO type</option>
-                <option value="1">BT Maize</option>
-                <option value="2">Cassava</option>
-                <option value="3">Bt Cotton</option>
-                <option value="4">Apples</option>
+                <option value="don't pick this">Choose your GMO type</option>
+                <option value="Bt_maize">BT Maize</option>
+                <option value="Cassava">Cassava</option>
+                <option value="Bt_cotton">Bt Cotton</option>
+                <option value="Apples">Apples</option>
               </select>
             </div>
             <div className="mb-3">
@@ -82,18 +112,31 @@ const ApplicationForm = () => {
                 className="form-select"
                 name="GMO_purpose"
                 required
-                aria-label="counties select"
+                aria-label="purpose select"
+                value={gmoPurpose}
+                onChange={(e) => setGmoPurpose(e.target.value)}
               >
-                <option selected>Choose GMO purpose</option>
-                <option value="1">Research</option>
-                <option value="2">Farming</option>
-                <option value="3">Certificate for local</option>
-                <option value="4">Certificate for export</option>
-                <option value="5">Other...</option>
+                <option value="don't pick this">Choose your GMO purpose</option>
+                <option value="Research">Research</option>
+                <option value="Farming">Farming</option>
+                <option value="Local">Certificate for local</option>
+                <option value="Export">Certificate for export</option>
+                <option value="Other">Other...</option>
               </select>
             </div>
+            <div className="mb-3">
+              <label htmlFor="formTextArea">Feedback and complaints</label>
+              <textarea
+                type="text"
+                className="form-control"
+                rows="3"
+                placeholder="Write us a feedback"
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+              ></textarea>
+            </div>
             <div className="d-flex justify-content-center">
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="btn btn-warning">
                 Submit
               </button>
             </div>

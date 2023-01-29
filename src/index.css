@@ -13,7 +13,8 @@ code {
 }
 
 .outer{
-  margin-top: 90px;
+  margin-top: 40px;
+  margin-bottom: 30px;
   display: flex;
   justify-content: center;
 }
@@ -34,10 +35,11 @@ code {
   width: 120%;
   border-top-left-radius: 40px;
   border-bottom-left-radius: 40px;
+  object-fit: cover;
 }
 
 .column2{
   width: 50%;
-  padding-top: 10px;
+  padding-top: 15px;
   padding-bottom: 20px;
 }
