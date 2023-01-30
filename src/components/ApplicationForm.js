@@ -21,7 +21,7 @@ const ApplicationForm = () => {
       feedback: feedback,
     })
       .then(() => {
-        console.log("Message sent successfully");
+        alert("Message sent successfully");
       })
       .catch((error) => {
         console.log(error.message);
